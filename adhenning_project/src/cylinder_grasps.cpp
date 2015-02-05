@@ -167,12 +167,12 @@ public:
       grasp_posture.header.stamp = ros::Time::now();
       grasp_posture.joint_names = joint_names;
       grasp_posture.points.resize(1);
-      grasp_posture.points[0].positions.push_back(0.35);
-      grasp_posture.points[0].positions.push_back(0.35);
-      grasp_posture.points[0].positions.push_back(0.35);
-      grasp_posture.points[0].positions.push_back(0.6981);
-      grasp_posture.points[0].positions.push_back(0.6981);
-      grasp_posture.points[0].positions.push_back(0.6981);
+      grasp_posture.points[0].positions.push_back(0.175);
+      grasp_posture.points[0].positions.push_back(0.175);
+      grasp_posture.points[0].positions.push_back(0.175);
+      grasp_posture.points[0].positions.push_back(0.5);
+      grasp_posture.points[0].positions.push_back(0.5);
+      grasp_posture.points[0].positions.push_back(0.5);
       grasp_posture.points[0].time_from_start = ros::Duration(4.0);
       possible_grasp.grasp_posture = grasp_posture;
 
@@ -181,7 +181,7 @@ public:
       grasp_pose_msg.header.frame_id = "/root";
       grasp_pose_msg.pose = object_pose;
 
-      grasp_pose_msg.pose.position.z += 0.25;
+      grasp_pose_msg.pose.position.z += 0.2;
 
       // Eigen::AngleAxisd rollAngle(0, Eigen::Vector3d::UnitZ());
       // Eigen::AngleAxisd yawAngle(-1.45, Eigen::Vector3d::UnitY());
@@ -202,7 +202,8 @@ public:
       pre_grasp_approach.direction.header.frame_id = "/root";
       pre_grasp_approach.direction.header.stamp = ros::Time::now();
       pre_grasp_approach.desired_distance = 0.6;
-      pre_grasp_approach.min_distance = 0.4;pre_grasp_approach.direction.vector.x = 0;
+      pre_grasp_approach.min_distance = 0.4;
+      pre_grasp_approach.direction.vector.x = 0;
       pre_grasp_approach.direction.vector.y = 0;
       pre_grasp_approach.direction.vector.z = -1; // Approach direction (negative z axis)
       possible_grasp.pre_grasp_approach = pre_grasp_approach;
@@ -230,6 +231,7 @@ public:
       
       move_group_->setSupportSurfaceName("Floor");
       move_group_->setPlannerId("RRTstarkConfigDefault");
+      move_group_->setPlanningTime(30);
       std::cout << "Ready to pick: " << block_name << std::endl;
       ros::Duration(0.5).sleep(); 
       std::cout << "Picking: " << block_name << std::endl;
@@ -269,7 +271,7 @@ public:
       return generateRandomObject(object_pose);
     }
 
-    start_object_pose.position.z = 0; // BLOCK_SIZE/2;
+    start_object_pose.position.z =  BLOCK_SIZE/2;
 
     // Orientation
     double angle = 0; // M_PI / 1.5;

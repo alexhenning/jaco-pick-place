@@ -14,17 +14,17 @@ jaco_gripper_controller:
   constraints:
     # goal_time: 60
     jaco_joint_finger_1:
-      goal: 0.4
+      goal: 1.0
     jaco_joint_finger_tip_1:
-      goal: 0.4
+      goal: 1.0
     jaco_joint_finger_2:
-      goal: 0.4
+      goal: 1.0
     jaco_joint_finger_tip_2:
-      goal: 0.4
+      goal: 1.0
     jaco_joint_finger_3:
-      goal: 0.4
+      goal: 1.0
     jaco_joint_finger_tip_3:
-      goal: 0.4
+      goal: 1.0
   
   # gains:
   #   jaco_finger_joint_1:
