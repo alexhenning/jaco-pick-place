@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Start simple grasps -->
+  <node name="simple_grasps" pkg="adhenning_project" type="simple_grasps" output="screen">
+    <rosparam command="load" file="$(find adhenning_project)/config/grasping.yaml"/>
+  </node>
+</launch>

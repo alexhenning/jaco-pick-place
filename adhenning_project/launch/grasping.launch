@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find jaco_moveit_config)/launch/demo.launch" />
+
+  <!-- Fix odom -->
+  <node pkg="tf" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 odom_combined jaco_base_link 100" />
+
+  <!-- Start simple grasps -->
+  <node name="moveit_simple_grasps_test" pkg="adhenning_project" type="simple_grasps_test" output="screen">
+    <rosparam command="load" file="$(find adhenning_project)/config/grasping.yaml"/>
+    <!--rosparam command="load" file="$(find baxter_moveit_config)/config/kinematics.yaml"/-->
+  </node>
+</launch>
+

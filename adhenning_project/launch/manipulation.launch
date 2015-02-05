@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+  <group>
+    <!-- rosrun gazebo_ros spawn_model -sdf -database bookshelf -y 1 -model bookshelf -->
+    <node name="spawn_bookshelf_model" pkg="gazebo_ros" type="spawn_model"
+          args="-sdf -database bookshelf -y 1 -model bookshelf"
+          respawn="false" output="screen" />
+    
+    <!-- rosrun gazebo_ros spawn_model -urdf -file src/adhenning_jaco/adhenning_project/urdf/book.urdf -y 0.75 -z 0.55 -model book -->
+    <!-- <node name="spawn_book_model" pkg="gazebo_ros" type="spawn_model" -->
+    <!--       args="-urdf -file $(find adhenning_project)/urdf/book.urdf -y 0.75 -z 0.65 -model book" -->
+    <!--       respawn="false" output="screen" /> -->
+    <node name="spawn_book_model" pkg="gazebo_ros" type="spawn_model"
+          args="-urdf -file $(find adhenning_project)/urdf/book.urdf -x 0.20 -y 0.75 -z 0.25 -model book"
+          respawn="false" output="screen" />
+  </group>
+  
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find jaco_bringup)/launch/moveit.launch" />
+
+  <!-- Fix odom -->
+  <node pkg="tf" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 odom_combined jaco_base_link 100" />
+
+  <!-- Start simple grasps -->
+  <node name="moveit_simple_grasps_test" pkg="adhenning_project" type="simple_grasps" output="screen" ns="/jaco">
+    <rosparam command="load" file="$(find adhenning_project)/config/grasping.yaml"/>
+    <!--rosparam command="load" file="$(find baxter_moveit_config)/config/kinematics.yaml"/-->
+  </node>
+</launch>
+

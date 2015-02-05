@@ -1,0 +1,24 @@
+base_link: 'root'
+
+gripper:
+  end_effector_name: 'gripper' #ee group name
+  #actuated joints in end effector
+  joints: 
+    - jaco_joint_finger_1
+    - jaco_joint_finger_tip_1
+    - jaco_joint_finger_2
+    - jaco_joint_finger_tip_2
+    - jaco_joint_finger_3
+    - jaco_joint_finger_tip_3
+  #open position
+  pregrasp_posture: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  pregrasp_time_from_start: 4.0
+  #close position
+  # grasp_posture: [0.4862, 0.6981, 0.6316, 0.6981, 0.6981, 0.6981]
+  grasp_posture: [0.35, 0.6981, 0.35, 0.6981, 0.35, 0.6981]
+  grasp_time_from_start: 8.0
+  #desired pose from end effector to grasp - [x,y,z]
+  grasp_pose_to_eef: [-0.15, 0.0, 0.0]
+  #desired pose from end effector to grasp - [r, p, y]
+  grasp_pose_to_eef_rotation: [0.0, -1.45, 0.0] # 1.5708 = PI/2
+  end_effector_parent_link: 'jaco_link_hand'
