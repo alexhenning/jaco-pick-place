@@ -25,31 +25,33 @@ if __name__ == '__main__':
     # print help(arm.pick)
     # print arm.pick
 
-    print "Cleaning the previous scene"
-    scene.remove_world_object("Floor")
-    scene.remove_world_object("Box")
+    # print "Cleaning the previous scene"
+    # scene.remove_world_object("Floor")
+    # scene.remove_world_object("Box")
 
-    print "Publishing a demo scene...", robot.get_planning_frame()
-    p = PoseStamped()
-    p.header.frame_id = robot.get_planning_frame()
-    scene.add_plane("Floor", p)
+    # print "Publishing a demo scene...", robot.get_planning_frame()
+    # p = PoseStamped()
+    # p.header.frame_id = robot.get_planning_frame()
+    # scene.add_plane("Floor", p)
 
-    p = PoseStamped()
-    p.header.frame_id = robot.get_planning_frame()
-    p.pose.position.x = -0.2
-    p.pose.position.y = 0.5
-    p.pose.position.z = 0.075/2
-    scene.add_box("Box", p, (0.075, 0.075, 0.075))
+    # p = PoseStamped()
+    # p.header.frame_id = robot.get_planning_frame()
+    # p.pose.position.x = -0.2
+    # p.pose.position.y = 0.5
+    # p.pose.position.z = 0.075/2
+    # scene.add_box("Box", p, (0.075, 0.075, 0.075))
 
     # self.setColor("Floor", 0, 0.8, 0, 0.75)
     # self.setColor("Box", 0, 0, 1.00, 1.0)
     # self.sendColors()
 
-    rospy.sleep(1)
-    print "...Scene published."
+    # rospy.sleep(1)
+    # print "...Scene published."
 
     # print "Pick an object"
     # robot.arm.pick("part")
+    print dir(robot)
+    print dir(robot.arm)
 
     rospy.spin()
     roscpp_shutdown()

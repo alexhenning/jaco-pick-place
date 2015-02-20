@@ -1,0 +1,279 @@
+<robot
+  name="CuteBot">
+  <link
+    name="root">
+    <inertial>
+      <origin
+        xyz="1.12865611817288E-18 1.33872169928537E-16 -4.23828538133938E-17"
+        rpy="0 0 0" />
+      <mass
+        value="56.8529424890367" />
+      <inertia
+        ixx="1.78328987828311"
+        ixy="-1.82959116606947E-18"
+        ixz="-2.20634491913652E-17"
+        iyy="1.01807778803407"
+        iyz="1.53902037183144E-16"
+        izz="2.74589128656529" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/chassis.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/chassis.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="frontRight">
+    <inertial>
+      <origin
+        xyz="-0.02407 6.9389E-18 -2.7756E-17"
+        rpy="0 0 0" />
+      <mass
+        value="2.3225" />
+      <inertia
+        ixx="0.019166"
+        ixy="4.8529E-19"
+        ixz="4.9472E-19"
+        iyy="0.010039"
+        iyz="-2.6021E-18"
+        izz="0.010039" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/frontRight.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="100 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/frontRight.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jFrontRight"
+    type="continuous">
+    <origin
+      xyz="-0.2286 -0.2032 0"
+      rpy="1.4207 0 0" />
+    <parent
+      link="root" />
+    <child
+      link="frontRight" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="60" />
+    <dynamics
+      damping="1"
+      friction="1" />
+  </joint>
+  <link
+    name="frontLeft">
+    <inertial>
+      <origin
+        xyz="0.02407 -5.5511E-17 6.9389E-18"
+        rpy="0 0 0" />
+      <mass
+        value="2.3225" />
+      <inertia
+        ixx="0.019166"
+        ixy="-6.2148E-19"
+        ixz="5.6829E-19"
+        iyy="0.010039"
+        iyz="3.7947E-19"
+        izz="0.010039" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/frontLeft.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="100 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/frontLeft.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jFrontLeft"
+    type="continuous">
+    <origin
+      xyz="0.2286 -0.2032 0"
+      rpy="3.0815 0 0" />
+    <parent
+      link="root" />
+    <child
+      link="frontLeft" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="60" />
+    <dynamics
+      damping="1"
+      friction="1" />
+  </joint>
+  <link
+    name="backRight">
+    <inertial>
+      <origin
+        xyz="-0.02407 0 -2.7756E-17"
+        rpy="0 0 0" />
+      <mass
+        value="2.3225" />
+      <inertia
+        ixx="0.019166"
+        ixy="-3.8001E-19"
+        ixz="2.1709E-19"
+        iyy="0.010039"
+        iyz="6.5052E-19"
+        izz="0.010039" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/backRight.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 100 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/backRight.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jBackRight"
+    type="continuous">
+    <origin
+      xyz="-0.2286 0.2032 0"
+      rpy="1.1306 0 0" />
+    <parent
+      link="root" />
+    <child
+      link="backRight" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="60" />
+    <dynamics
+      damping="1"
+      friction="1" />
+  </joint>
+  <link
+    name="backLeft">
+    <inertial>
+      <origin
+        xyz="0.02407 2.7756E-17 6.9389E-17"
+        rpy="0 0 0" />
+      <mass
+        value="2.3225" />
+      <inertia
+        ixx="0.019166"
+        ixy="7.3701E-20"
+        ixz="4.7898E-19"
+        iyy="0.010039"
+        iyz="-4.3368E-19"
+        izz="0.010039" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/backLeft.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 100 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://cute_bot_description/meshes/backLeft.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="jBackLeft"
+    type="continuous">
+    <origin
+      xyz="0.2286 0.2032 0"
+      rpy="0.23365 0 0" />
+    <parent
+      link="root" />
+    <child
+      link="backLeft" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      effort="0"
+      velocity="60" />
+    <dynamics
+      damping="1"
+      friction="1" />
+  </joint>
+</robot>

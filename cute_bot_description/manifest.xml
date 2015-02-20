@@ -1,0 +1,6 @@
+<package>
+  <description brief="CuteBot2andColor.SLDASM">CuteBot2andColor.SLDASM</description>
+  <depend package="gazebo" />
+  <author>me</author>
+  <license>BSD</license>
+</package>
