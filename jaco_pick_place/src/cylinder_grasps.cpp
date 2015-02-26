@@ -246,7 +246,7 @@ public:
       err = gripper_->move();
       std::cout << "Opening gripper: " << err << std::endl;
       
-      group.detachObject(collision_object.id);
+      arm_->detachObject(object_name);
       
       // Test if done
       ++i;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(adhenning_project)
+project(jaco_pick_place)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -95,7 +95,7 @@ find_package(Boost REQUIRED thread system)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include
+ # INCLUDE_DIRS include
  # LIBRARIES adhenning_project
  CATKIN_DEPENDS
     actionlib_msgs
@@ -124,18 +124,6 @@ include_directories(
 # add_library(adhenning_project
 #   src/${PROJECT_NAME}/adhenning_project.cpp
 # )
-
-## Declare a cpp executable
-add_executable(simple_grasps src/simple_grasps.cpp)
-target_link_libraries(simple_grasps
-  ${catkin_LIBRARIES} ${Boost_LIBRARIES}
-)
-
-add_executable(simple_grasps_test src/simple_grasps_test.cpp)
-target_link_libraries(simple_grasps_test
-  ${catkin_LIBRARIES} ${Boost_LIBRARIES}
-)
-
 
 ## Declare a cpp executable
 add_executable(cylinder_grasps src/cylinder_grasps.cpp)
@@ -167,7 +155,7 @@ target_link_libraries(cylinder_grasps
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS simple_grasps simple_grasps_test cylinder_grasps
+install(TARGETS cylinder_grasps
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
