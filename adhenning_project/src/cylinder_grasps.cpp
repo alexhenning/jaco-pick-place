@@ -105,25 +105,6 @@ public:
     visual_tools_->generateEmptyPose(pose);
 
     // ---------------------------------------------------------------------------------------------
-    // Animate open and closing end effector
-
-    // visual_tools_->loadEEMarker(grasp_data_.ee_group_, planning_group_name_);
-    // for (std::size_t i = 0; i < 4; ++i)
-    // {
-    //   // Test visualization of end effector in OPEN position
-    //   grasp_data_.setRobotStatePreGrasp( visual_tools_->getSharedRobotState() );
-    //   visual_tools_->loadEEMarker(grasp_data_.ee_group_, planning_group_name_);
-    //   visual_tools_->publishEEMarkers(pose, rviz_visual_tools::ORANGE, "test_eef");
-    //   ros::Duration(1.0).sleep();
-
-    //   // Test visualization of end effector in CLOSED position
-    //   grasp_data_.setRobotStateGrasp( visual_tools_->getSharedRobotState() );
-    //   visual_tools_->loadEEMarker(grasp_data_.ee_group_, planning_group_name_);
-    //   visual_tools_->publishEEMarkers(pose, rviz_visual_tools::GREEN, "test_eef");
-    //   ros::Duration(1.0).sleep();
-    // }
-
-    // ---------------------------------------------------------------------------------------------
     // Generate grasps for a bunch of random objects
     geometry_msgs::Pose object_pose;
 
@@ -137,7 +118,6 @@ public:
       generateTestObject(i, object_pose);
       
       // Show the block
-      // visual_tools_->publishBlock(object_pose, rviz_visual_tools::BLUE, BLOCK_SIZE);
       visual_tools_->cleanupACO("Cylinder 0");
       visual_tools_->publishCollisionFloor(0.0, "Floor", rviz_visual_tools::BLUE);
       visual_tools_->publishCollisionTable(0.0, 0.75, 0.0, 0.8, 0.18, 1.5,
@@ -147,7 +127,8 @@ public:
       std::string object_name = stringStream.str();
       visual_tools_->publishCollisionCylinder(object_pose, object_name, 0.035, 0.25);
       ros::Duration(0.5).sleep(); 
-      
+
+      // Generate a Grasp
       moveit_msgs::Grasp possible_grasp;
       possible_grasp.id = "My Grasp";
       possible_grasp.grasp_quality = 1.0;
@@ -182,9 +163,6 @@ public:
       grasp_posture.points[0].positions.push_back(0.15);
       grasp_posture.points[0].positions.push_back(0.15);
       grasp_posture.points[0].positions.push_back(0.15);
-      // grasp_posture.points[0].positions.push_back(0.275);
-      // grasp_posture.points[0].positions.push_back(0.275);
-      // grasp_posture.points[0].positions.push_back(0.275);
       grasp_posture.points[0].positions.push_back(0.6981);
       grasp_posture.points[0].positions.push_back(0.6981);
       grasp_posture.points[0].positions.push_back(0.6981);
@@ -197,7 +175,6 @@ public:
       grasp_pose_msg.pose = object_pose;
 
       grasp_pose_msg.pose.position.y -= 0.1525;
-      // grasp_pose_msg.pose.position.z += 0.1;
 
       Eigen::AngleAxisd rollAngle(0, Eigen::Vector3d::UnitZ());
       Eigen::AngleAxisd yawAngle(0, Eigen::Vector3d::UnitY());
@@ -207,11 +184,6 @@ public:
       grasp_pose_msg.pose.orientation.y = quat.y();
       grasp_pose_msg.pose.orientation.z = quat.z();
       grasp_pose_msg.pose.orientation.w = quat.w();
-      
-      // grasp_pose_msg.pose.orientation.x = 0;
-      // grasp_pose_msg.pose.orientation.y = 0;
-      // grasp_pose_msg.pose.orientation.z = 0;
-      // grasp_pose_msg.pose.orientation.w = 1;
       possible_grasp.grasp_pose = grasp_pose_msg;
 
       moveit_msgs::GripperTranslation pre_grasp_approach;
@@ -220,8 +192,8 @@ public:
       pre_grasp_approach.desired_distance = 0.4;
       pre_grasp_approach.min_distance = 0.05;
       pre_grasp_approach.direction.vector.x = 0;
-      pre_grasp_approach.direction.vector.y = 1;
-      pre_grasp_approach.direction.vector.z = 0; // Approach direction (negative z axis)
+      pre_grasp_approach.direction.vector.y = 1; // Approach direction (pos y axis)
+      pre_grasp_approach.direction.vector.z = 0;
       possible_grasp.pre_grasp_approach = pre_grasp_approach;
 
       moveit_msgs::GripperTranslation post_grasp_retreat;
@@ -234,29 +206,13 @@ public:
       post_grasp_retreat.direction.vector.z = 1; // Retreat direction (pos z axis)
       possible_grasp.post_grasp_retreat = post_grasp_retreat;
 
-      // moveit_msgs::GripperTranslation post_place_retreat;
-      // post_place_retreat.direction.header.frame_id = "/root";
-      // post_place_retreat.direction.header.stamp = ros::Time::now();
-      // post_place_retreat.desired_distance = 0.4;
-      // post_place_retreat.min_distance = 0.05;
-      // post_place_retreat.direction.vector.x = 0;
-      // post_place_retreat.direction.vector.y = 0;
-      // post_place_retreat.direction.vector.z = 1; // Retreat direction (pos z axis)
-      // possible_grasp.post_place_retreat = post_place_retreat;
-        
       possible_grasp.allowed_touch_objects.push_back(object_name);
       possible_grasp.allowed_touch_objects.push_back("Table");
 
       std::vector<moveit_msgs::Grasp> possible_grasps;
       possible_grasps.push_back(possible_grasp);
 
-      // visual_tools_->loadEEMarker("gripper", "arm");
-      // std::cout << "Showing grasp: " << object_name << std::endl;
-      // visual_tools_->publishGrasps(possible_grasps, "jaco_link_hand");
-      // ros::Duration(2.0).sleep();
-      // std::cout << "Showing animated grasp: " << object_name << std::endl;
-      // visual_tools_->publishAnimatedGrasps(possible_grasps, "jaco_link_hand");
-      
+      // Execute Pick
       arm_->setSupportSurfaceName("Table");
       std::cout << "Ready to pick: " << object_name << std::endl;
       ros::Duration(0.5).sleep(); 
@@ -265,97 +221,6 @@ public:
       std::cout << "Picking: " << err << std::endl;
 
       std::cout << "Placing: " << object_name << std::endl;
-      // rollAngle = Eigen::AngleAxisd(0, Eigen::Vector3d::UnitZ());
-      // yawAngle = Eigen::AngleAxisd(0, Eigen::Vector3d::UnitY());
-      // pitchAngle = Eigen::AngleAxisd(0, Eigen::Vector3d::UnitX());
-      // quat = rollAngle * yawAngle * pitchAngle;
-      // grasp_pose_msg.pose.orientation.x = quat.x();
-      // grasp_pose_msg.pose.orientation.y = quat.y();
-      // grasp_pose_msg.pose.orientation.z = quat.z();
-      // grasp_pose_msg.pose.orientation.w = quat.w();
-      // grasp_pose_msg.pose.position.x = -grasp_pose_msg.pose.position.x;
-      // grasp_pose_msg.pose.position.y += 0.2;
-      // grasp_pose_msg.pose.position.z += 0.2;
-      // arm_->place(object_name, grasp_pose_msg);
-      // arm_->place(object_name);
-
-      // moveit_msgs::PlaceLocation place_location;
-      // place_location.id = "My Place";
-
-      // trajectory_msgs::JointTrajectory post_place_posture;
-      // post_place_posture.header.frame_id = "root";
-      // post_place_posture.header.stamp = ros::Time::now();
-      // post_place_posture.joint_names = joint_names;
-      // post_place_posture.points.resize(1);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].positions.push_back(0);
-      // post_place_posture.points[0].time_from_start = ros::Duration(4.0);
-      // place_location.post_place_posture = post_place_posture;
-
-      // geometry_msgs::PoseStamped place_pose;
-      // place_pose.header.stamp = ros::Time::now();
-      // place_pose.header.frame_id = "/root";
-      // place_pose.pose = object_pose;
-      // place_pose.pose.position.x = -0.3;
-      // place_pose.pose.position.y = 0.5;
-      // place_pose.pose.position.z += 0.15;
-      // rollAngle = Eigen::AngleAxisd(0, Eigen::Vector3d::UnitZ());
-      // yawAngle = Eigen::AngleAxisd(0, Eigen::Vector3d::UnitY());
-      // pitchAngle = Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitX());
-      // quat = rollAngle * yawAngle * pitchAngle;
-      // place_pose.pose.orientation.x = quat.x();
-      // place_pose.pose.orientation.y = quat.y();
-      // place_pose.pose.orientation.z = quat.z();
-      // place_pose.pose.orientation.w = quat.w();
-      // std::cout << "Target: " << place_pose << std::endl;
-      // place_location.place_pose = place_pose;
-
-      // moveit_msgs::GripperTranslation pre_place_approach;
-      // pre_place_approach.direction.header.frame_id = "/root";
-      // pre_place_approach.direction.header.stamp = ros::Time::now();
-      // pre_place_approach.desired_distance = 0.3;
-      // pre_place_approach.min_distance = 0.05;
-      // pre_place_approach.direction.vector.x = 0;
-      // pre_place_approach.direction.vector.y = 1;
-      // pre_place_approach.direction.vector.z = 0; // Retreat direction (pos z axis)
-      // place_location.pre_place_approach = pre_place_approach;
-
-      // moveit_msgs::GripperTranslation post_place_retreat;
-      // post_place_retreat.direction.header.frame_id = "/root";
-      // post_place_retreat.direction.header.stamp = ros::Time::now();
-      // post_place_retreat.desired_distance = 0.4;
-      // post_place_retreat.min_distance = 0.05;
-      // post_place_retreat.direction.vector.x = 0;
-      // post_place_retreat.direction.vector.y = -1;
-      // post_place_retreat.direction.vector.z = 0; // Retreat direction (pos z axis)
-      // place_location.post_place_retreat = post_place_retreat;
-
-      // place_location.allowed_touch_objects.push_back(object_name);
-      // place_location.allowed_touch_objects.push_back("Table");
-
-
-      // possible_grasps[0].pre_grasp_posture = possible_grasps[0].grasp_posture;
-      // possible_grasps[0].grasp_posture = place_location.post_place_posture;
-      // possible_grasps[0].grasp_pose = place_location.place_pose;
-      // possible_grasps[0].pre_grasp_approach = place_location.pre_place_approach;
-      // possible_grasps[0].post_grasp_retreat = place_location.post_place_retreat;
-        
-      // visual_tools_->loadEEMarker("gripper", "arm");
-      // std::cout << "Showing place: " << object_name << std::endl;
-      // visual_tools_->publishGrasps(possible_grasps, "jaco_link_hand");
-      // ros::Duration(2.0).sleep();
-      // std::cout << "Showing animated place: " << object_name << std::endl;
-      // visual_tools_->publishAnimatedGrasps(possible_grasps, "jaco_link_hand");
-      
-      // std::vector<moveit_msgs::PlaceLocation> place_locations;
-      // place_locations.push_back(place_location);
-      
-      // arm_->place(object_name, place_locations);
-
       // Target Pose
       object_pose.position.x = -0.3;
       object_pose.position.y = 0.5;
@@ -381,7 +246,7 @@ public:
       err = gripper_->move();
       std::cout << "Opening gripper: " << err << std::endl;
       
-      // group.detachObject(collision_object.id);
+      group.detachObject(collision_object.id);
       
       // Test if done
       ++i;
@@ -394,29 +259,8 @@ public:
   {
     // Position
     geometry_msgs::Pose start_object_pose;
-
-    switch (i)
-    {
-    case 0:
-      start_object_pose.position.x = 0.3;
-      start_object_pose.position.y = 0.5;
-      break;
-    case 1:
-      start_object_pose.position.x = 0.4;
-      start_object_pose.position.y = -0.2;
-      break;
-    case 2:
-      start_object_pose.position.x = 0.4;
-      start_object_pose.position.y = -0.2;
-      break;
-    case 3:
-      start_object_pose.position.x = 0.4;
-      start_object_pose.position.y = -0.2;
-      break;
-    default:
-      return generateRandomObject(object_pose);
-    }
-
+    start_object_pose.position.x = 0.3;
+    start_object_pose.position.y = 0.5;
     start_object_pose.position.z =  0.25;
 
     // Orientation
@@ -429,8 +273,6 @@ public:
 
     // Choose which object to test
     object_pose = start_object_pose;
-
-    //visual_tools_->publishObject( object_pose, OBJECT_SIZE, true );
   }
 
   void generateRandomObject(geometry_msgs::Pose& object_pose)
@@ -463,7 +305,7 @@ public:
 int main(int argc, char *argv[])
 {
   int num_tests = 1;
-  ros::init(argc, argv, "grasp_generator_test");
+  ros::init(argc, argv, "cylinder_pick_and_place");
 
   ROS_INFO_STREAM_NAMED("main","Simple Grasps Test");
 
@@ -483,7 +325,6 @@ int main(int argc, char *argv[])
   // Benchmark time
   double duration = (ros::Time::now() - start_time).toNSec() * 1e-6;
   ROS_INFO_STREAM_NAMED("","Total time: " << duration);
-  //std::cout << duration << "\t" << num_tests << std::endl;
 
   ros::Duration(1.0).sleep(); // let rviz markers finish publishing
 
